@@ -1,4 +1,5 @@
 import os
+from CONFIG import REPO, BRANCH
 from requests import get
 from json import loads
 
@@ -10,7 +11,7 @@ def update():
 
 
 def update_project(path):
-    response = get('https://api.github.com/repos/eniallator/Python-Hosting-Server/commits/master')
+    response = get('https://api.github.com/repos/' + REPO + '/commits/' + BRANCH)
     content = loads(response.content)
     last_sha = content['commit']['tree']['sha']
     sha_file_path = os.path.join(path, SHA_FILE)
