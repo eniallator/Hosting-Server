@@ -1,14 +1,12 @@
 import os
+import sys
 from src.update import update_project
 
-try:
-    from dev_config import DEV_MODE
-except ModuleNotFoundError as err:
-    DEV_MODE = False
+PROD = 'production' in sys.argv
 
 
 def main():
-    if not DEV_MODE:
+    if PROD:
         print('Checking for updates...')
         update_project(os.path.dirname(os.path.realpath(__file__)))
 
