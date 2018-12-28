@@ -16,9 +16,11 @@ def get_files_to_download(download_url, to_download={}):
     contents = _download(download_url)
 
     if contents is None:
+        print('Failed to get the file list from github')
         return {}
 
     repo_content = loads(contents)
+    print('Retrieving files.')
 
     for downloaded_object in repo_content:
         if downloaded_object['type'] == 'file':
@@ -32,6 +34,7 @@ def get_files_to_download(download_url, to_download={}):
 
 def replace_files(path, to_download):
     for name, download_url in to_download.items():
+        print('Replacing ' + name)
         curr_path = os.path.join(path, name)
         if isinstance(download_url, dict):
             nested_files = download_url
@@ -50,6 +53,7 @@ def validate_SHA(path):
     page_contents = _download('https://api.github.com/repos/' + REPO + '/commits/' + BRANCH)
 
     if page_contents is None:
+        print('Failed to get the SHA response from github.')
         return True
 
     content = loads(page_contents)
@@ -59,14 +63,17 @@ def validate_SHA(path):
     if not os.path.isfile(sha_file_path):
         with open(sha_file_path, 'w') as file_handle:
             file_handle.write(last_sha)
+        print('Wrote last SHA.')
         return True
 
     with open(sha_file_path, 'r') as file_handle:
         if file_handle.read() == last_sha:
+            print('Up to date.')
             return True
 
     with open(sha_file_path, 'w') as file_handle:
         file_handle.write(last_sha)
+    print('Wrote new SHA.')
     return False
 
 
