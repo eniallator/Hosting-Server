@@ -83,6 +83,5 @@ def update_project(path, repo, branch):
     to_download = get_files_to_download('https://api.github.com/repos/%s/contents?ref=%s' % (repo, branch))
     replace_files(path, to_download)
 
-    import app
-    app.main()
+    os.system('python3 ' + os.path.join(path, 'app.py'))
     raise SystemExit
