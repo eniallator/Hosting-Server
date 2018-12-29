@@ -16,11 +16,10 @@ def get_files_to_download(download_url, to_download={}):
     contents = _download(download_url)
 
     if contents is None:
-        print('Failed to get the file list from github')
+        print('Failed to reach: ' + download_url)
         return {}
 
     repo_content = loads(contents)
-    print('Retrieving files.')
 
     for downloaded_object in repo_content:
         if downloaded_object['type'] == 'file':
@@ -32,17 +31,17 @@ def get_files_to_download(download_url, to_download={}):
     return to_download
 
 
-def replace_files(path, to_download):
+def replace_files(path, to_download, path_to_print=''):
     for name, download_url in to_download.items():
-        print('Replacing ' + name)
         curr_path = os.path.join(path, name)
         if isinstance(download_url, dict):
             nested_files = download_url
             if not os.path.exists(curr_path):
                 os.mkdir(path)
-            replace_files(curr_path, nested_files)
+            replace_files(curr_path, nested_files, path_to_print=os.path.join(path_to_print, name))
 
         else:
+            print('Replacing ' + os.path.join(path_to_print, name))
             with open(curr_path, 'w') as file_handle:
                 contents = _download(download_url)
                 if contents is not None:
@@ -81,6 +80,7 @@ def update_project(path):
     if validate_SHA(path):
         return
 
+    print('Retrieving files...')
     to_download = get_files_to_download('https://api.github.com/repos/' + REPO + '/contents?ref=' + BRANCH)
     replace_files(path, to_download)
 
