@@ -16,7 +16,9 @@ def main():
 
     dyno_path = os.path.join(project_path, DYNO_FOLDER)
     dyno_manager = DynoManager(dyno_path)
-    dyno_manager.add_dyno(name='foo_bar', repo='eniallator/Discord-Overwatch-Bot', branch='master', main='app.py')
+    dyno_manager.add_dyno(name='Enibot', repo='eniallator/Discord-Enibot', branch='master', main='app.py')
+    dyno_manager.add_dyno(name='Overwatch', repo='eniallator/Discord-Overwatch-Bot', branch='master', main='app.py')
+    print(dyno_manager._dynos)
 
 
 if __name__ == "__main__":
