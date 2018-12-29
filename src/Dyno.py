@@ -13,7 +13,7 @@ class Dyno:
             self._project_path = project_path
 
     def _load_data(self, data):
-        items = re.findall(r'"[^"]*"', data)
+        items = [item[1:-1] for item in re.findall(r'"[^"]*"', data)]
 
         self._repo = items[0]
         self._branch = items[1]
