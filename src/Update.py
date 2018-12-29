@@ -75,8 +75,8 @@ def validate_SHA(path, repo, branch):
     return False
 
 
-def update_project(path, repo, branch):
-    if validate_SHA(path, repo, branch):
+def update_project(path, repo, branch, force=False):
+    if force or validate_SHA(path, repo, branch):
         return
 
     print('Retrieving files...')

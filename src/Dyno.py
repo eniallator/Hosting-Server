@@ -1,4 +1,5 @@
 import re
+from src.Update import update_project
 
 
 class Dyno:
@@ -21,3 +22,6 @@ class Dyno:
 
     def get_data(self):
         return '"' + '", "'.join([self._repo, self._branch, self._main, self._project_path]) + '"'
+
+    def update_project(self, force_update):
+        update_project(self._project_path, self._repo, self._branch, force=force_update)
