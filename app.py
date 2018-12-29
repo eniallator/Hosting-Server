@@ -12,7 +12,9 @@ def main():
 
     if PROD:
         print('Checking for updates...')
-        update_project(project_path, REPO, BRANCH)
+        if update_project(project_path, REPO, BRANCH):
+            os.system('python3 ' + os.path.join(project_path, 'app.py'))
+            raise SystemExit
 
     dyno_path = os.path.join(project_path, DYNO_FOLDER)
     dyno_manager = DynoManager(dyno_path)

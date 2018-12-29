@@ -76,12 +76,11 @@ def validate_SHA(path, repo, branch):
 
 
 def update_project(path, repo, branch, force=False):
-    if force or validate_SHA(path, repo, branch):
+    if not force and validate_SHA(path, repo, branch):
         return
 
     print('Retrieving files...')
     to_download = get_files_to_download('https://api.github.com/repos/%s/contents?ref=%s' % (repo, branch))
     replace_files(path, to_download)
 
-    os.system('python3 ' + os.path.join(path, 'app.py'))
-    raise SystemExit
+    return True
