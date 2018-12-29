@@ -1,5 +1,4 @@
 import os
-from CONFIG import REPO, BRANCH
 from requests import get
 from json import loads
 
@@ -48,8 +47,8 @@ def replace_files(path, to_download, path_to_print=''):
                     file_handle.write(contents)
 
 
-def validate_SHA(path):
-    page_contents = _download('https://api.github.com/repos/' + REPO + '/commits/' + BRANCH)
+def validate_SHA(path, repo, branch):
+    page_contents = _download('https://api.github.com/repos/' + repo + '/commits/' + branch)
 
     if page_contents is None:
         print('Failed to get the SHA response from github.')
@@ -76,12 +75,12 @@ def validate_SHA(path):
     return False
 
 
-def update_project(path):
-    if validate_SHA(path):
+def update_project(path, repo, branch):
+    if validate_SHA(path, repo, branch):
         return
 
     print('Retrieving files...')
-    to_download = get_files_to_download('https://api.github.com/repos/' + REPO + '/contents?ref=' + BRANCH)
+    to_download = get_files_to_download('https://api.github.com/repos/' + repo + '/contents?ref=' + branch)
     replace_files(path, to_download)
 
     import app
