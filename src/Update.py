@@ -1,6 +1,6 @@
 import os
-from requests import get
 from json import loads
+from requests import get
 
 SHA_FILE = 'SHA_FILE.txt'
 
