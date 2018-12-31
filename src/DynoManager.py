@@ -1,6 +1,6 @@
 import os
 import re
-import threading
+import sys
 from src.Dyno import Dyno
 
 
@@ -10,9 +10,10 @@ DATA_FILE = 'dynos.dat'
 class DynoManager:
 
     def __init__(self, dyno_folder):
-        self._dynos = {}
         self._dyno_folder = dyno_folder
         self._data_file = os.path.join(dyno_folder, DATA_FILE)
+
+        self._dynos = {}
 
         if not os.path.exists(self._dyno_folder):
             os.mkdir(self._dyno_folder)
@@ -67,3 +68,29 @@ class DynoManager:
 
         print('Created a new dyno called ' + name)
         return {'success': 'Created dyno'}
+
+    def start_dyno(self, name):
+        if name not in self._dynos:
+            print('Tried starting a dyno that doesn\'t exist: ' + name)
+            return {'error': 'Dyno doesn\'t exist'}
+        elif self._dynos[name].running:
+            print('Tried starting an already running dyno: ' + name)
+            return {'error': 'Dyno already running'}
+
+        dyno = self._dynos[name]
+        dyno.run()
+
+        print('Successfully started dyno: ' + name)
+        return {'success': 'Started dyno'}
+
+    def stop_dyno(self, name):
+        if name not in self._dynos:
+            print('Tried stopping a dyno that doesn\'t exist: ' + name)
+            return {'error': 'Dyno doesn\'t exist'}
+        if not self._dynos[name].running:
+            print('Tried stopping a dyno that\'s not running: ' + name)
+            return {'error': 'Dyno not running'}
+
+        self._dynos[name].stop()
+        print('Successfully stopped dyno: ' + name)
+        return {'success': 'Stopped dyno'}
