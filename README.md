@@ -1,2 +1,2 @@
-# Python-Hosting-Server
-Hosting software made with Python that automatically updates itself. Made for my Raspberry PI
+# Hosting-Server
+Hosting software which can run github projects that automatically updates itself. Made for my Raspberry PI
